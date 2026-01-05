@@ -21,15 +21,49 @@ def create_region(world: BitsAndBopsWorld, name: str):
     create_locations(world, reg)
     world.regions.append(reg)
 
+level_names = [
+    "Flipper Snapper"
+    "Sweet Tooth"
+    "Rock, Paper, Showdown!"
+    "Pantry Parade"
+    "Jungle Mixtape"
+    "B-Bot & the Fly Girls"
+    "Flow Worm"
+    "Meet & Tweet"
+    "Steady Bears"
+    "Sky Mixtape"
+    "Pop Up Kitchen"
+    "Firework Festival"
+    "Hammer Time!"
+    "Molecano"
+    "Ocean Mixtape"
+    "President Bird"
+    "Snakedown"
+    "Octeaparty"
+    "Globe Trotters"
+    "Fire Mixtape"
+]
 
 def create_regions(world: BitsAndBopsWorld):
     create_region(world, "Menu")
-    create_region(world, "Example Region 1")
-    create_region(world, "Example Region 2")
-    create_region(world, "Example Region 3")
+    for level_name in level_names:
+        create_region(world, level_name)
+        create_region(world, f"{level_name} - Record")
+    create_region(world, "Encore Cartridge")
+    create_region(world, "Three-Legged Race Cartridge")
+    create_region(world, "Blacksmith Cartridge")
+    create_region(world, "Symphony Cartridge")
 
 
 def connect_all_regions(world: BitsAndBopsWorld):
-    connect_regions(world, "Menu","Example Region 1", "Menu -> Example Region 1")
-    connect_regions(world, "Example Region 1","Example Region 2", "Example Region 1 -> Example Region 2")
-    connect_regions(world, "Example Region 1","Example Region 3", "Example Region 1 -> Example Region 3")
+    for level_name in level_names:
+        connect_regions(world, "Menu", level_name, f"Menu -> {level_name}")
+        connect_regions(world, "Menu", level_name, f"Menu -> {level_name} - Record")
+    connect_regions(world, "Menu","Encore Cartridge",
+                    "Menu -> Encore Cartridge")
+    connect_regions(world, "Menu","Three-Legged Race Cartridge",
+                    "Menu -> Three-Legged Race Cartridge")
+    connect_regions(world, "Menu","Blacksmith Cartridge",
+                    "Menu -> Blacksmith Cartridge")
+    connect_regions(world, "Menu", "Symphony Cartridge",
+                    "Menu -> Symphony Cartridge")
