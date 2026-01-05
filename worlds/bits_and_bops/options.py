@@ -10,7 +10,7 @@ class Goal(Choice):
     Final Mixtape: Complete the Final Mixtape
     """
     display_name = "Goal"
-    option_goal1 = 0
+    option_goal = 0
     default = 0
 
 
@@ -93,10 +93,11 @@ bits_and_bops_option_groups = [
         RequiredRank,
     ]),
     OptionGroup("Sanity Options", [
-        BadgeSanity
+        BadgeSanity,
+        AllowedBadges,
     ]),
-    OptionGroup("Traps", [
-    ]),
+    #OptionGroup("Traps", [
+    #]),
     OptionGroup("Death Link", [
         DeathLink
     ]),

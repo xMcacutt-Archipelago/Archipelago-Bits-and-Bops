@@ -40,8 +40,6 @@ def create_locations_from_dict(loc_dict, reg, player):
 def create_locations(world: BitsAndBopsWorld, reg: Region):
     # Levels
     create_locations_from_dict(levels_dict, reg, world.player)
-    # Example 2
-    create_locations_from_dict(example_location_dict2, reg, world.player)
     # Badges
     if world.options.badgesanity.value:
         create_locations_from_dict(badge_dict, reg, world.player)
@@ -212,12 +210,6 @@ levels_dict = {
 }
 
 
-example_location_dict2 = {
-    # description
-    "Example Location Dict 2":
-        LocData(0x200, "Example Region"),
-}
-
 
 badge_dict = {
     # Badges
@@ -258,6 +250,5 @@ badge_dict = {
 
 bits_and_bops_location_table = {
     **levels_dict,
-    **example_location_dict2,
     **badge_dict,
 }
