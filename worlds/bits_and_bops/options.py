@@ -13,17 +13,6 @@ class Goal(Choice):
     option_goal = 0
     default = 0
 
-
-class RequiredLevelCompletions(Range):
-    """
-    The number of total levels that need to be completed to unlock the Final Mixtape
-    """
-    display_name = "Required Level Completions"
-    range_start = 4
-    range_end = 16
-    default = 9
-
-
 class RequiredRank(Choice):
     """
     The rank required to receive a check on a level.
@@ -39,6 +28,46 @@ class RequiredRank(Choice):
     amazing = 1
     perfect = 2
     default = 1
+
+
+class RequiredLevelCompletions(Range):
+    """
+    The number of total levels that need to be completed to unlock the Final Mixtape
+    """
+    display_name = "Required Level Completions"
+    range_start = 1
+    range_end = 20
+    default = 10
+
+
+class Required16RPMCompletions(Range):
+    """
+    The number of 16RPM completions required to unlock Final Mixtape
+    """
+    display_name = "Required 16RPM Completions"
+    range_start = 0
+    range_end = 20
+    default = 0
+
+
+class Required45RPMCompletions(Range):
+    """
+    The number of 45RPM completions required to unlock Final Mixtape
+    """
+    display_name = "Required 45RPM Completions"
+    range_start = 0
+    range_end = 20
+    default = 0
+
+
+class Required78RPMCompletions(Range):
+    """
+    The number of 78RPM completions required to unlock Final Mixtape
+    """
+    display_name = "Required 78RPM Completions"
+    range_start = 0
+    range_end = 20
+    default = 0
 
 
 class BadgeSanity(Toggle):
@@ -89,8 +118,11 @@ bits_and_bops_option_groups = [
         Goal,
     ]),
     OptionGroup("Logic Options", [
-        RequiredLevelCompletions,
         RequiredRank,
+        RequiredLevelCompletions,
+        Required16RPMCompletions,
+        Required45RPMCompletions,
+        Required78RPMCompletions,
     ]),
     OptionGroup("Sanity Options", [
         BadgeSanity,
@@ -109,6 +141,9 @@ class BitsAndBopsOptions(PerGameCommonOptions):
     goal: Goal
     required_rank: RequiredRank
     required_level_completions: RequiredLevelCompletions
+    required_16_rpm_completions: Required16RPMCompletions
+    required_45_rpm_completions: Required45RPMCompletions
+    required_78_rpm_completions: Required78RPMCompletions
     badgesanity: BadgeSanity
     allowed_badges: AllowedBadges
     death_link: DeathLink
