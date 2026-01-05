@@ -24,9 +24,9 @@ class RequiredRank(Choice):
     Perfect: Requires perfection. WARNING: THIS WILL CAUSE CHECKS TO BE EXTREMELY DIFFICULT!
     """
     display_name = "Required Rank"
-    cool = 0
-    amazing = 1
-    perfect = 2
+    option_cool = 0
+    option_amazing = 1
+    option_perfect = 2
     default = 1
 
 
