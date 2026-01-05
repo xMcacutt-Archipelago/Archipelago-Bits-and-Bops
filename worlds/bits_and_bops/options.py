@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from Options import Choice, Range, Toggle, DeathLink, DefaultOnToggle, OptionGroup, PerGameCommonOptions
+from Options import Choice, Range, Toggle, DeathLink, DefaultOnToggle, OptionGroup, PerGameCommonOptions, OptionSet
 
 
 class Goal(Choice):
@@ -47,6 +47,42 @@ class BadgeSanity(Toggle):
     """
     display_name = "Badgesanity"
 
+
+class PrioritizedBadges(OptionSet):
+    """
+    Sets which badges will be allowed to potentially have progression items
+    """
+    display_name = "Prioritized Badges"
+    valid_keys = [
+        "Explorer Badge",
+        "Aviator Badge",
+        "Diver Badge",
+        "Firefighter Badge",
+        "Bravo! Badge",
+        "Marathoner Badge",
+        "Smithy Badge",
+        "Maestro Badge",
+        "Timekeeper Badge",
+        "Completely Cool Badge",
+        "Altogether Amazing Badge",
+        "Purely Perfect Badge",
+        "Get Help Badge",
+        "Scratch the Itch Badge",
+        "Technical Difficulties Badge",
+        "Troublemaker Badge",
+    ]
+    default = ["Explorer Badge",
+                   "Aviator Badge",
+                   "Diver Badge",
+                   "Firefighter Badge",
+                   "Marathoner Badge",
+                   "Smithy Badge",
+                   "Get Help Badge",
+                   "Scratch the Itch Badge",
+                   "Technical Difficulties Badge",
+                   "Troublemaker Badge",
+    ]
+
 bits_and_bops_option_groups = [
     OptionGroup("Goal Options", [
         Goal,
@@ -72,4 +108,5 @@ class BitsAndBopsOptions(PerGameCommonOptions):
     required_rank: RequiredRank
     required_level_completions: RequiredLevelCompletions
     badgesanity: BadgeSanity
+    prioritized_badges: PrioritizedBadges
     death_link: DeathLink
