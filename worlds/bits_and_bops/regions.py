@@ -44,6 +44,13 @@ level_names = [
     "Fire Mixtape"
 ]
 
+cartridge_names = [
+    "Encore Cartridge"
+    "Three-Legged Race Cartridge"
+    "Blacksmith Cartridge"
+    "Symphony Cartridge"
+]
+
 def create_regions(world: BitsAndBopsWorld):
     create_region(world, "Menu")
     for level_name in level_names:
@@ -59,11 +66,6 @@ def connect_all_regions(world: BitsAndBopsWorld):
     for level_name in level_names:
         connect_regions(world, "Menu", level_name, f"Menu -> {level_name}")
         connect_regions(world, "Menu", level_name, f"Menu -> {level_name} - Record")
-    connect_regions(world, "Menu","Encore Cartridge",
-                    "Menu -> Encore Cartridge")
-    connect_regions(world, "Menu","Three-Legged Race Cartridge",
-                    "Menu -> Three-Legged Race Cartridge")
-    connect_regions(world, "Menu","Blacksmith Cartridge",
-                    "Menu -> Blacksmith Cartridge")
-    connect_regions(world, "Menu", "Symphony Cartridge",
-                    "Menu -> Symphony Cartridge")
+
+    for cartridge_name in cartridge_names:
+        connect_regions(world, "Menu", cartridge_name, f"Menu -> {cartridge_name}")
