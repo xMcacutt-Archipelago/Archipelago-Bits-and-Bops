@@ -48,11 +48,11 @@ class BadgeSanity(Toggle):
     display_name = "Badgesanity"
 
 
-class PrioritizedBadges(OptionSet):
+class AllowedBadges(OptionSet):
     """
     Sets which badges will be allowed to potentially have progression items
     """
-    display_name = "Prioritized Badges"
+    display_name = "Allowed Badges"
     valid_keys = [
         "Explorer Badge",
         "Aviator Badge",
@@ -71,16 +71,17 @@ class PrioritizedBadges(OptionSet):
         "Technical Difficulties Badge",
         "Troublemaker Badge",
     ]
-    default = ["Explorer Badge",
-                   "Aviator Badge",
-                   "Diver Badge",
-                   "Firefighter Badge",
-                   "Marathoner Badge",
-                   "Smithy Badge",
-                   "Get Help Badge",
-                   "Scratch the Itch Badge",
-                   "Technical Difficulties Badge",
-                   "Troublemaker Badge",
+    default = [
+        "Explorer Badge",
+        "Aviator Badge",
+        "Diver Badge",
+        "Firefighter Badge",
+        "Marathoner Badge",
+        "Smithy Badge",
+        "Get Help Badge",
+        "Scratch the Itch Badge",
+        "Technical Difficulties Badge",
+        "Troublemaker Badge",
     ]
 
 bits_and_bops_option_groups = [
@@ -108,5 +109,5 @@ class BitsAndBopsOptions(PerGameCommonOptions):
     required_rank: RequiredRank
     required_level_completions: RequiredLevelCompletions
     badgesanity: BadgeSanity
-    prioritized_badges: PrioritizedBadges
+    allowed_badges: AllowedBadges
     death_link: DeathLink

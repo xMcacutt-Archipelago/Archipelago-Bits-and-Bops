@@ -1,8 +1,8 @@
 import typing
-from BaseClasses import Item, MultiWorld, Tutorial, ItemClassification, Region, Location
+from BaseClasses import Item, MultiWorld, Tutorial, ItemClassification, Region, Location, LocationProgressType
 from worlds.AutoWorld import WebWorld, World
 from .items import BitsAndBopsItem, bits_and_bops_item_table, create_items, ItemData, place_locked_items
-from .locations import bits_and_bops_location_table, BitsAndBopsLocation
+from .locations import bits_and_bops_location_table, BitsAndBopsLocation, badge_dict
 from .options import BitsAndBopsOptions, bits_and_bops_option_groups
 from .regions import create_regions, connect_regions, connect_all_regions
 from .rules import set_rules
@@ -49,6 +49,10 @@ class BitsAndBopsWorld(World):
         }
 
     def generate_early(self) -> None:
+        for badge in self.options.allowed_badges.valid_keys:
+            badge_dict[badge].progress_type = LocationProgressType.EXCLUDED
+        for badge in self.options.allowed_badges.value:
+            badge_dict[badge].progress_type = LocationProgressType.DEFAULT
         return
 
     def create_item(self, name: str) -> Item:

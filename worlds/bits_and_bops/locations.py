@@ -12,7 +12,7 @@ class BitsAndBopsLocation(Location):
 
 
 class LocData:
-    def __init__(self, code: int, region: str):
+    def __init__(self, code: int, region: str, progress_type: LocationProgressType = LocationProgressType.DEFAULT):
         """
         Represents a location with associated conditions.
 
@@ -21,10 +21,12 @@ class LocData:
         """
         self.code = code
         self.region = region
+        self.progress_type = progress_type
 
 
-def create_location(player: int, reg: Region, name: str, code: int):
+def create_location(player: int, reg: Region, name: str, code: int, progress_type: LocationProgressType = LocationProgressType.DEFAULT):
     location = BitsAndBopsLocation(player, name, code, reg)
+    location.progress_type = progress_type
     reg.locations.append(location)
 
 
@@ -32,15 +34,15 @@ def create_locations_from_dict(loc_dict, reg, player):
     for (key, data) in loc_dict.items():
         if data.region != reg.name:
             continue
-        create_location(player, reg, key, data.code)
+        create_location(player, reg, key, data.code, data.progress_type)
 
 
 def create_locations(world: BitsAndBopsWorld, reg: Region):
-    # Example 1
+    # Levels
     create_locations_from_dict(levels_dict, reg, world.player)
     # Example 2
     create_locations_from_dict(example_location_dict2, reg, world.player)
-    # Example 3
+    # Badges
     if world.options.badgesanity.value:
         create_locations_from_dict(badge_dict, reg, world.player)
 
