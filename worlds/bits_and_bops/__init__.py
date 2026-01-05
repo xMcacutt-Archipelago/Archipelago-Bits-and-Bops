@@ -50,6 +50,11 @@ class BitsAndBopsWorld(World):
         return {
             "ModVersion": "1.0.0",
             "Goal": self.options.goal.value,
+            "Required Rank": self.options.required_rank.value,
+            "Required Level Completions": self.options.required_level_completions.value,
+            "Required 16RPM Completions": self.options.required_16_rpm_completions.value,
+            "Required 45RPM Completions": self.options.required_45_rpm_completions.value,
+            "Required 78RPM Completions": self.options.required_78_rpm_completions.value,
             "DeathLink": self.options.death_link.value,
         }
 
