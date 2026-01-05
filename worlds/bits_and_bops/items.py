@@ -61,10 +61,11 @@ def create_items(world: BitsAndBopsWorld):
         create_single("Octeaparty Record", world)
         create_single("Globe Trotters Record", world)
         create_single("Fire Mixtape Record", world)
-    create_single("Symphony Cartridge", world)
-    create_single("Three-Legged Race Cartridge", world)
-    create_single("Blacksmith Cartridge", world)
-    create_single("Encore Cartridge", world)
+    if world.options.badgesanity:
+        create_single("Symphony Cartridge", world)
+        create_single("Three-Legged Race Cartridge", world)
+        create_single("Blacksmith Cartridge", world)
+        create_single("Encore Cartridge", world)
 
     # Junk
     remaining_locations: int = total_location_count - len(world.multiworld.worlds[world.player].itempool)
