@@ -230,21 +230,21 @@ badge_dict = {
     "Maestro Badge":
         LocData(0x307, "Symphony Cartridge"),
     "Timekeeper Badge":
-        LocData(0x308, "Clock"),
+        LocData(0x308, "Menu"),
     "Completely Cool Badge":
-        LocData(0x309, "All Levels"),
+        LocData(0x309, "Menu"),
     "Altogether Amazing Badge":
-        LocData(0x30A, "All Levels"),
+        LocData(0x30A, "Menu"),
     "Purely Perfect Badge":
-        LocData(0x30B, "All Levels"),
+        LocData(0x30B, "Menu"),
     "Get Help Badge":
-        LocData(0x30C, "Help Desk"),
+        LocData(0x30C, "Menu"),
     "Scratch the Itch Badge":
-        LocData(0x30D, "Record Player"),
+        LocData(0x30D, "Menu"),
     "Technical Difficulties Badge":
-        LocData(0x30E, "Computer"),
+        LocData(0x30E, "Menu"),
     "Troublemaker Badge":
-        LocData(0x30F, "Any Level")
+        LocData(0x30F, "Menu")
 }
 
 
