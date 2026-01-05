@@ -1,11 +1,11 @@
 import typing
 from BaseClasses import Item, MultiWorld, Tutorial, ItemClassification, Region, Location, LocationProgressType
 from worlds.AutoWorld import WebWorld, World
-from .items import BitsAndBopsItem, bits_and_bops_item_table, create_items, ItemData, place_locked_items
+from .items import BitsAndBopsItem, bits_and_bops_item_table, create_items, ItemData
 from .locations import bits_and_bops_location_table, BitsAndBopsLocation, badge_dict
 from .options import BitsAndBopsOptions, bits_and_bops_option_groups
 from .regions import create_regions, connect_regions, connect_all_regions
-from .rules import set_rules
+from .rules import set_rules, create_events
 
 class BitsAndBopsWeb(WebWorld):
     theme = "grass"
@@ -42,6 +42,11 @@ class BitsAndBopsWorld(World):
         self.itempool = []
 
     def fill_slot_data(self) -> id:
+        #from Utils import visualize_regions
+        #state = self.multiworld.get_all_state(False)
+        #state.update_reachable_regions(self.player)
+        #visualize_regions(self.get_region("Menu"), f"{self.player_name}_world.puml",
+        #                  show_entrance_names=True, regions_to_highlight=state.reachable_regions[self.player])
         return {
             "ModVersion": "1.0.0",
             "Goal": self.options.goal.value,
@@ -62,18 +67,18 @@ class BitsAndBopsWorld(World):
     def create_items(self):
         create_items(self)
 
-    def create_event(self, region_name: str, event_name: str) -> None:
+    def create_event(self, region_name: str, event_loc_name: str, event_item_name: str) -> None:
         region: Region = self.multiworld.get_region(region_name, self.player)
-        loc: BitsAndBopsLocation = BitsAndBopsLocation(self.player, event_name, None, region)
-        loc.place_locked_item(BitsAndBopsItem(event_name, ItemClassification.progression, None, self.player))
+        loc: BitsAndBopsLocation = BitsAndBopsLocation(self.player, event_loc_name, None, region)
+        loc.place_locked_item(BitsAndBopsItem(event_item_name, ItemClassification.progression, None, self.player))
         region.locations.append(loc)
 
     def create_regions(self):
         create_regions(self)
-        place_locked_items(self)
         connect_all_regions(self)
 
     def set_rules(self):
+        create_events(self)
         set_rules(self)
 
     def extend_hint_information(self, hint_data: typing.Dict[int, typing.Dict[int, str]]):
