@@ -84,10 +84,12 @@ bits_and_bops_item_table: Dict[str, ItemData] = {
     "Three-Legged Race Cartridge": ItemData(0x16, ItemClassification.progression),
     "Blacksmith Cartridge": ItemData(0x17, ItemClassification.progression),
     "Encore Cartridge": ItemData(0x18, ItemClassification.progression),
+    "Random Souvenir": ItemData(0x19, ItemClassification.filler),
 }
 
 
 junk_weights = {
+    "Random Souvenir": 10
 }
 
 trap_weights = {
