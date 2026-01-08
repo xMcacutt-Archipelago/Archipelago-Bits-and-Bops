@@ -134,11 +134,13 @@ bits_and_bops_item_table: Dict[str, ItemData] = {
     "Fire Mixtape Record":           ItemData(0x2C, ItemClassification.progression),
     #Junk
     "Random Souvenir":               ItemData(0x100, ItemClassification.filler),
+    "Random Video Tape":             ItemData(0x101, ItemClassification.filler),
 }
 
 
 junk_weights = {
-    "Random Souvenir": 10
+    "Random Souvenir":   10,
+    "Random Video Tape": 10
 }
 
 trap_weights = {
