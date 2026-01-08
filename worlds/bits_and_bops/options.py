@@ -246,7 +246,7 @@ class BitsAndBopsOptions(PerGameCommonOptions):
     excluded_16_rpm_levels: Excluded16RPMLevels
     required_45_rpm_completions: Required45RPMCompletions
     allowed_45_rpm_levels: Excluded45RPMLevels
-    excluded_78_rpm_completions: Required78RPMCompletions
+    required_78_rpm_completions: Required78RPMCompletions
     excluded_78_rpm_levels: Excluded78RPMLevels
     badgesanity: BadgeSanity
     allowed_badges: AllowedBadges
