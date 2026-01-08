@@ -52,7 +52,7 @@ class Required16RPMCompletions(Range):
 
 class Excluded16RPMLevels(OptionSet):
     """
-    Choose which 78 RPM levels should not have required items
+    Choose which 16 RPM levels should not have required items
     """
     display_name = "Allowed 16RPM Levels"
     valid_keys = [
@@ -92,7 +92,7 @@ class Required45RPMCompletions(Range):
 
 class Excluded45RPMLevels(OptionSet):
     """
-    Choose which 78 RPM levels should not have required items
+    Choose which 45 RPM levels should not have required items
     """
     display_name = "Allowed 45RPM Levels"
     valid_keys = [
@@ -136,7 +136,7 @@ class Excluded78RPMLevels(OptionSet):
     """
     display_name = "Excluded 78RPM Levels"
     valid_keys = [
-    "Flipper Snapper - 78RPM - 78RPM",
+    "Flipper Snapper - 78RPM",
     "Sweet Tooth - 78RPM",
     "Rock, Paper, Showdown! - 78RPM",
     "Pantry Parade - 78RPM",
