@@ -2,7 +2,8 @@ import typing
 from BaseClasses import Item, MultiWorld, Tutorial, ItemClassification, Region, Location, LocationProgressType
 from worlds.AutoWorld import WebWorld, World
 from .items import BitsAndBopsItem, bits_and_bops_item_table, create_items, ItemData
-from .locations import bits_and_bops_location_table, BitsAndBopsLocation, badge_dict
+from .locations import bits_and_bops_location_table, BitsAndBopsLocation, badge_dict, rpm_16_level_dict, \
+    rpm_45_level_dict, rpm_78_level_dict
 from .options import BitsAndBopsOptions, bits_and_bops_option_groups
 from .regions import create_regions, connect_regions, connect_all_regions
 from .rules import set_rules, create_events
@@ -63,6 +64,19 @@ class BitsAndBopsWorld(World):
             badge_dict[badge].progress_type = LocationProgressType.EXCLUDED
         for badge in self.options.allowed_badges.value:
             badge_dict[badge].progress_type = LocationProgressType.DEFAULT
+        for level_16rpm in self.options.excluded_16_rpm_levels.valid_keys:
+            rpm_16_level_dict[level_16rpm].progress_type = LocationProgressType.DEFAULT
+        for level_16rpm in self.options.excluded_16_rpm_levels.value:
+            rpm_16_level_dict[level_16rpm].progress_type = LocationProgressType.EXCLUDED
+        for level_45rpm in self.options.allowed_45_rpm_levels.valid_keys:
+            rpm_45_level_dict[level_45rpm].progress_type = LocationProgressType.DEFAULT
+        for level_45rpm in self.options.allowed_45_rpm_levels.value:
+            rpm_45_level_dict[level_45rpm].progress_type = LocationProgressType.EXCLUDED
+        for level_78rpm in self.options.excluded_78_rpm_levels.valid_keys:
+            rpm_78_level_dict[level_78rpm].progress_type = LocationProgressType.DEFAULT
+        for level_78rpm in self.options.excluded_78_rpm_levels.value:
+            rpm_78_level_dict[level_78rpm].progress_type = LocationProgressType.EXCLUDED
+
         return
 
     def create_item(self, name: str) -> Item:

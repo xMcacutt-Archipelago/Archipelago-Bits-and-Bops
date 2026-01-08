@@ -50,6 +50,36 @@ class Required16RPMCompletions(Range):
     default = 0
 
 
+class Excluded16RPMLevels(OptionSet):
+    """
+    Choose which 78 RPM levels should not have required items
+    """
+    display_name = "Allowed 16RPM Levels"
+    valid_keys = [
+    "Flipper Snapper - 16RPM",
+    "Sweet Tooth - 16RPM",
+    "Rock, Paper, Showdown! - 16RPM",
+    "Pantry Parade - 16RPM",
+    "Jungle Mixtape - 16RPM",
+    "B-Bot & the Fly Girls - 16RPM",
+    "Flow Worms - 16RPM",
+    "Meet & Tweet - 16RPM",
+    "Steady Bears - 16RPM",
+    "Sky Mixtape - 16RPM",
+    "Pop Up Kitchen - 16RPM",
+    "Firework Festival - 16RPM",
+    "Hammer Time! - 16RPM",
+    "Molecano - 16RPM",
+    "Ocean Mixtape - 16RPM",
+    "President Bird - 16RPM",
+    "Snakedown - 16RPM",
+    "Octeaparty - 16RPM",
+    "Globe Trotters - 16RPM",
+    "Fire Mixtape - 16RPM",
+    ]
+    default = []
+
+
 class Required45RPMCompletions(Range):
     """
     The number of 45RPM completions required to unlock Final Mixtape
@@ -60,6 +90,36 @@ class Required45RPMCompletions(Range):
     default = 0
 
 
+class Excluded45RPMLevels(OptionSet):
+    """
+    Choose which 78 RPM levels should not have required items
+    """
+    display_name = "Allowed 45RPM Levels"
+    valid_keys = [
+    "Flipper Snapper - 45RPM",
+    "Sweet Tooth - 45RPM",
+    "Rock, Paper, Showdown! - 45RPM",
+    "Pantry Parade - 45RPM",
+    "Jungle Mixtape - 45RPM",
+    "B-Bot & the Fly Girls - 45RPM",
+    "Flow Worms - 45RPM",
+    "Meet & Tweet - 45RPM",
+    "Steady Bears - 45RPM",
+    "Sky Mixtape - 45RPM",
+    "Pop Up Kitchen - 45RPM",
+    "Firework Festival - 45RPM",
+    "Hammer Time! - 45RPM",
+    "Molecano - 45RPM",
+    "Ocean Mixtape - 45RPM",
+    "President Bird - 45RPM",
+    "Snakedown - 45RPM",
+    "Octeaparty - 45RPM",
+    "Globe Trotters - 45RPM",
+    "Fire Mixtape - 45RPM",
+    ]
+    default = []
+
+
 class Required78RPMCompletions(Range):
     """
     The number of 78RPM completions required to unlock Final Mixtape
@@ -68,6 +128,44 @@ class Required78RPMCompletions(Range):
     range_start = 0
     range_end = 20
     default = 0
+
+
+class Excluded78RPMLevels(OptionSet):
+    """
+    Choose which 78 RPM levels should not have required items
+    """
+    display_name = "Excluded 78RPM Levels"
+    valid_keys = [
+    "Flipper Snapper - 78RPM - 78RPM",
+    "Sweet Tooth - 78RPM",
+    "Rock, Paper, Showdown! - 78RPM",
+    "Pantry Parade - 78RPM",
+    "Jungle Mixtape - 78RPM",
+    "B-Bot & the Fly Girls - 78RPM",
+    "Flow Worms - 78RPM",
+    "Meet & Tweet - 78RPM",
+    "Steady Bears - 78RPM",
+    "Sky Mixtape - 78RPM",
+    "Pop Up Kitchen - 78RPM",
+    "Firework Festival - 78RPM",
+    "Hammer Time! - 78RPM",
+    "Molecano - 78RPM",
+    "Ocean Mixtape - 78RPM",
+    "President Bird - 78RPM",
+    "Snakedown - 78RPM",
+    "Octeaparty - 78RPM",
+    "Globe Trotters - 78RPM",
+    "Fire Mixtape - 78RPM",
+    ]
+    default = [
+    "Pantry Parade - 78RPM",
+    "Flow Worms - 78RPM",
+    "Steady Bears - 78RPM",
+    "Sky Mixtape - 78RPM",
+    "Snakedown - 78RPM",
+    "Globe Trotters - 78RPM",
+    "Fire Mixtape - 78RPM",
+    ]
 
 
 class BadgeSanity(Toggle):
@@ -121,8 +219,11 @@ bits_and_bops_option_groups = [
         RequiredRank,
         RequiredLevelCompletions,
         Required16RPMCompletions,
+        Excluded16RPMLevels,
         Required45RPMCompletions,
+        Excluded45RPMLevels,
         Required78RPMCompletions,
+        Excluded78RPMLevels,
     ]),
     OptionGroup("Sanity Options", [
         BadgeSanity,
@@ -142,8 +243,11 @@ class BitsAndBopsOptions(PerGameCommonOptions):
     required_rank: RequiredRank
     required_level_completions: RequiredLevelCompletions
     required_16_rpm_completions: Required16RPMCompletions
+    excluded_16_rpm_levels: Excluded16RPMLevels
     required_45_rpm_completions: Required45RPMCompletions
-    required_78_rpm_completions: Required78RPMCompletions
+    allowed_45_rpm_levels: Excluded45RPMLevels
+    excluded_78_rpm_completions: Required78RPMCompletions
+    excluded_78_rpm_levels: Excluded78RPMLevels
     badgesanity: BadgeSanity
     allowed_badges: AllowedBadges
     death_link: DeathLink
