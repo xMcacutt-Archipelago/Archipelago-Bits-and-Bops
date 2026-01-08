@@ -49,8 +49,7 @@ class BitsAndBopsWorld(World):
         #visualize_regions(self.get_region("Menu"), f"{self.player_name}_world.puml",
         #                  show_entrance_names=True, regions_to_highlight=state.reachable_regions[self.player])
         return {
-            "ModVersion": "1.0.0",
-            "Goal": self.options.goal.value,
+            "ModVersion": "1.0.1",
             "Required Rank": self.options.required_rank.value,
             "Required Level Completions": self.options.required_level_completions.value,
             "Required 16RPM Completions": self.options.required_16_rpm_completions.value,
