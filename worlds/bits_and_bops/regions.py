@@ -3,6 +3,7 @@ from worlds.bits_and_bops import *
 from BaseClasses import MultiWorld, Region, Entrance
 from typing import List, Dict
 
+from .data import *
 from worlds.bits_and_bops.locations import create_locations
 
 
@@ -21,49 +22,24 @@ def create_region(world: BitsAndBopsWorld, name: str):
     create_locations(world, reg)
     world.multiworld.regions.append(reg)
 
-level_names = [
-    "Flipper Snapper",
-    "Sweet Tooth",
-    "Rock, Paper, Showdown!",
-    "Pantry Parade",
-    "Jungle Mixtape",
-    "B-Bot & the Fly Girls",
-    "Flow Worms",
-    "Meet & Tweet",
-    "Steady Bears",
-    "Sky Mixtape",
-    "Pop Up Kitchen",
-    "Firework Festival",
-    "Hammer Time!",
-    "Molecano",
-    "Ocean Mixtape",
-    "President Bird",
-    "Snakedown",
-    "Octeaparty",
-    "Globe Trotters",
-    "Fire Mixtape",
-]
-
-cartridge_names = [
-    "Encore Cartridge",
-    "Three-Legged Race Cartridge",
-    "Blacksmith Cartridge",
-    "Symphony Cartridge",
-]
 
 def create_regions(world: BitsAndBopsWorld):
     create_region(world, "Menu")
     for level_name in level_names:
         create_region(world, level_name)
-        create_region(world, f"{level_name} - Record")
-    for cartridge_name in cartridge_names:
-        create_region(world, f"{cartridge_name}")
+        if has_records(world):
+            create_region(world, f"{level_name} - Record")
+    if world.options.badgesanity:
+        for cartridge_name in cartridge_names:
+            create_region(world, f"{cartridge_name}")
 
 
 def connect_all_regions(world: BitsAndBopsWorld):
     for level_name in level_names:
         connect_regions(world, "Menu", level_name, f"Menu -> {level_name}")
-        connect_regions(world, level_name, f"{level_name} - Record", f"Menu -> {level_name} - Record")
+        if has_records(world):
+            connect_regions(world, level_name, f"{level_name} - Record", f"Menu -> {level_name} - Record")
 
-    for cartridge_name in cartridge_names:
-        connect_regions(world, "Menu", cartridge_name, f"Menu -> {cartridge_name}")
+    if world.options.badgesanity:
+        for cartridge_name in cartridge_names:
+            connect_regions(world, "Menu", cartridge_name, f"Menu -> {cartridge_name}")

@@ -3,12 +3,15 @@ import typing
 from BaseClasses import Item, MultiWorld, Tutorial, ItemClassification, Region, Location, LocationProgressType
 from Options import OptionError
 from worlds.AutoWorld import WebWorld, World
-from .items import BitsAndBopsItem, bits_and_bops_item_table, create_items, ItemData
+from .items import BitsAndBopsItem, bits_and_bops_item_table, create_items, ItemData, get_random_item_names, \
+    junk_weights
 from .locations import bits_and_bops_location_table, BitsAndBopsLocation, badge_dict, rpm_16_level_dict, \
     rpm_45_level_dict, rpm_78_level_dict
 from .options import BitsAndBopsOptions, bits_and_bops_option_groups
 from .regions import create_regions, connect_regions, connect_all_regions
-from .rules import set_rules, create_events
+from .data import *
+from .rules import set_rules
+
 
 class BitsAndBopsWeb(WebWorld):
     theme = "grass"
@@ -52,7 +55,7 @@ class BitsAndBopsWorld(World):
         #visualize_regions(self.get_region("Menu"), f"{self.player_name}_world.puml",
         #                  show_entrance_names=True, regions_to_highlight=state.reachable_regions[self.player])
         return {
-            "ModVersion": "1.0.3",
+            "ModVersion": "1.0.4",
             "Required Rank": self.options.required_rank.value,
             "Required Level Completions": self.options.required_level_completions.value,
             "Required 16RPM Completions": self.options.required_16_rpm_completions.value,
@@ -61,13 +64,14 @@ class BitsAndBopsWorld(World):
             "DeathLink": self.options.death_link.value,
         }
 
+    def get_filler_item_name(self) -> str:
+        return get_random_item_names(self.random, 1, junk_weights)[0]
+
     def generate_early(self) -> None:
         valid_locations = 20
         required_locations = 20
 
-        if self.options.required_16_rpm_completions.value > 0 or \
-            self.options.required_45_rpm_completions.value > 0 or \
-            self.options.required_78_rpm_completions.value > 0:
+        if has_records(self):
             required_locations += 20
 
         if self.options.badgesanity.value:
@@ -100,12 +104,6 @@ class BitsAndBopsWorld(World):
 
         return
 
-    def pre_fill(self) -> None:
-        for item in self.multiworld.itempool:
-            print(item.name)
-        for item in self.multiworld.get_locations(self.player):
-            print(item.name)
-
     def create_item(self, name: str) -> Item:
         item_info = bits_and_bops_item_table[name]
         return BitsAndBopsItem(name, item_info.classification, item_info.code, self.player)
@@ -122,9 +120,17 @@ class BitsAndBopsWorld(World):
     def create_regions(self):
         create_regions(self)
         connect_all_regions(self)
+        for level_name in level_names:
+            self.create_event(level_name, f"{level_name} Complete", "Level Complete")
+            if self.options.required_16_rpm_completions.value > 0:
+                self.create_event(level_name, f"{level_name} 16 RPM Record Complete", "16 RPM Record Complete")
+            if self.options.required_45_rpm_completions.value > 0:
+                self.create_event(level_name, f"{level_name} 45 RPM Record Complete", "45 RPM Record Complete")
+            if self.options.required_78_rpm_completions.value > 0:
+                self.create_event(level_name, f"{level_name} 78 RPM Record Complete", "78 RPM Record Complete")
+        self.create_event("Menu", "Final Mixtape", "Final Mixtape")
 
     def set_rules(self):
-        create_events(self)
         set_rules(self)
 
     def extend_hint_information(self, hint_data: typing.Dict[int, typing.Dict[int, str]]):

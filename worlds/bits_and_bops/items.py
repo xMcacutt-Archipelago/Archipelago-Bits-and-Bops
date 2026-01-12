@@ -4,7 +4,7 @@ from worlds.bits_and_bops import *
 from .regions import level_names, cartridge_names
 from typing import Dict, Optional
 from BaseClasses import Item, ItemClassification, MultiWorld, Location
-
+from .data import *
 
 class BitsAndBopsItem(Item):
     game: str = "Bits & Bops"
@@ -38,9 +38,7 @@ def create_items(world: BitsAndBopsWorld):
         if level_name != starting_level:
             create_single(f"{level_name} Unlock", world)
     # Generic
-    if (world.options.required_16_rpm_completions > 0 or
-        world.options.required_45_rpm_completions > 0 or
-        world.options.required_78_rpm_completions > 0):
+    if has_records(world):
         create_single("Flipper Snapper Record", world)
         create_single("Sweet Tooth Record", world)
         create_single("Rock, Paper, Showdown! Record", world)
