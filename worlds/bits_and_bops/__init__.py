@@ -1,5 +1,7 @@
+import copy
 import typing
 from BaseClasses import Item, MultiWorld, Tutorial, ItemClassification, Region, Location, LocationProgressType
+from Options import OptionError
 from worlds.AutoWorld import WebWorld, World
 from .items import BitsAndBopsItem, bits_and_bops_item_table, create_items, ItemData
 from .locations import bits_and_bops_location_table, BitsAndBopsLocation, badge_dict, rpm_16_level_dict, \
@@ -41,6 +43,7 @@ class BitsAndBopsWorld(World):
     def __init__(self, multiworld: MultiWorld, player: int):
         super().__init__(multiworld, player)
         self.itempool = []
+        self.excluded_locs: set[str] = set()
 
     def fill_slot_data(self) -> id:
         #from Utils import visualize_regions
@@ -49,7 +52,7 @@ class BitsAndBopsWorld(World):
         #visualize_regions(self.get_region("Menu"), f"{self.player_name}_world.puml",
         #                  show_entrance_names=True, regions_to_highlight=state.reachable_regions[self.player])
         return {
-            "ModVersion": "1.0.1",
+            "ModVersion": "1.0.3",
             "Required Rank": self.options.required_rank.value,
             "Required Level Completions": self.options.required_level_completions.value,
             "Required 16RPM Completions": self.options.required_16_rpm_completions.value,
@@ -59,24 +62,49 @@ class BitsAndBopsWorld(World):
         }
 
     def generate_early(self) -> None:
-        for badge in self.options.allowed_badges.valid_keys:
-            badge_dict[badge].progress_type = LocationProgressType.EXCLUDED
-        for badge in self.options.allowed_badges.value:
-            badge_dict[badge].progress_type = LocationProgressType.DEFAULT
-        for level_16rpm in self.options.excluded_16_rpm_levels.valid_keys:
-            rpm_16_level_dict[level_16rpm].progress_type = LocationProgressType.DEFAULT
-        for level_16rpm in self.options.excluded_16_rpm_levels.value:
-            rpm_16_level_dict[level_16rpm].progress_type = LocationProgressType.EXCLUDED
-        for level_45rpm in self.options.allowed_45_rpm_levels.valid_keys:
-            rpm_45_level_dict[level_45rpm].progress_type = LocationProgressType.DEFAULT
-        for level_45rpm in self.options.allowed_45_rpm_levels.value:
-            rpm_45_level_dict[level_45rpm].progress_type = LocationProgressType.EXCLUDED
-        for level_78rpm in self.options.excluded_78_rpm_levels.valid_keys:
-            rpm_78_level_dict[level_78rpm].progress_type = LocationProgressType.DEFAULT
-        for level_78rpm in self.options.excluded_78_rpm_levels.value:
-            rpm_78_level_dict[level_78rpm].progress_type = LocationProgressType.EXCLUDED
+        valid_locations = 20
+        required_locations = 20
+
+        if self.options.required_16_rpm_completions.value > 0 or \
+            self.options.required_45_rpm_completions.value > 0 or \
+            self.options.required_78_rpm_completions.value > 0:
+            required_locations += 20
+
+        if self.options.badgesanity.value:
+            required_locations += 4
+
+        if self.options.required_16_rpm_completions.value > 0:
+            valid_locations += 20
+            for level_16rpm in self.options.excluded_16_rpm_levels.value:
+                self.excluded_locs.add(level_16rpm)
+
+        if self.options.required_45_rpm_completions.value > 0:
+            valid_locations += 20
+            for level_45rpm in self.options.excluded_45_rpm_levels.value:
+                self.excluded_locs.add(level_45rpm)
+
+        if self.options.required_78_rpm_completions.value > 0:
+            valid_locations += 20
+            for level_78rpm in self.options.excluded_78_rpm_levels.value:
+                self.excluded_locs.add(level_78rpm)
+
+        if self.options.badgesanity.value:
+            valid_locations += 4
+            for badge in self.options.excluded_badges.value:
+                self.excluded_locs.add(badge)
+
+        valid_locations -= len(self.excluded_locs)
+
+        if valid_locations < required_locations:
+            raise OptionError(f"[Bits & Bops - {self.multiworld.player_name[self.player]}] Too many locations excluded. Please adjust your yaml.")
 
         return
+
+    def pre_fill(self) -> None:
+        for item in self.multiworld.itempool:
+            print(item.name)
+        for item in self.multiworld.get_locations(self.player):
+            print(item.name)
 
     def create_item(self, name: str) -> Item:
         item_info = bits_and_bops_item_table[name]

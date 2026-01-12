@@ -54,7 +54,7 @@ class Excluded16RPMLevels(OptionSet):
     """
     Choose which 16 RPM levels should not have required items
     """
-    display_name = "Allowed 16RPM Levels"
+    display_name = "Excluded 16RPM Levels"
     valid_keys = [
     "Flipper Snapper - 16RPM",
     "Sweet Tooth - 16RPM",
@@ -94,7 +94,7 @@ class Excluded45RPMLevels(OptionSet):
     """
     Choose which 45 RPM levels should not have required items
     """
-    display_name = "Allowed 45RPM Levels"
+    display_name = "Excluded 45RPM Levels"
     valid_keys = [
     "Flipper Snapper - 45RPM",
     "Sweet Tooth - 45RPM",
@@ -170,16 +170,16 @@ class Excluded78RPMLevels(OptionSet):
 
 class BadgeSanity(Toggle):
     """
-    Determines whether badges provide a check when collected (some more difficult badges will be de-prioritized).
+    Determines whether badges provide a check when collected (some more difficult badges will be de-prioritized)
     """
     display_name = "Badgesanity"
 
 
-class AllowedBadges(OptionSet):
+class ExcludedBadges(OptionSet):
     """
-    Sets which badges will be allowed to potentially have progression items
+    Sets which badges should not have required items
     """
-    display_name = "Allowed Badges"
+    display_name = "Excluded Badges"
     valid_keys = [
         "Explorer Badge",
         "Aviator Badge",
@@ -199,16 +199,12 @@ class AllowedBadges(OptionSet):
         "Troublemaker Badge",
     ]
     default = [
-        "Explorer Badge",
-        "Aviator Badge",
-        "Diver Badge",
-        "Firefighter Badge",
-        "Marathoner Badge",
-        "Smithy Badge",
-        "Get Help Badge",
-        "Scratch the Itch Badge",
-        "Technical Difficulties Badge",
-        "Troublemaker Badge",
+        "Bravo! Badge",
+        "Maestro Badge",
+        "Timekeeper Badge",
+        "Completely Cool Badge",
+        "Altogether Amazing Badge",
+        "Purely Perfect Badge",
     ]
 
 bits_and_bops_option_groups = [
@@ -227,7 +223,7 @@ bits_and_bops_option_groups = [
     ]),
     OptionGroup("Sanity Options", [
         BadgeSanity,
-        AllowedBadges,
+        ExcludedBadges,
     ]),
     #OptionGroup("Traps", [
     #]),
@@ -245,9 +241,9 @@ class BitsAndBopsOptions(PerGameCommonOptions):
     required_16_rpm_completions: Required16RPMCompletions
     excluded_16_rpm_levels: Excluded16RPMLevels
     required_45_rpm_completions: Required45RPMCompletions
-    allowed_45_rpm_levels: Excluded45RPMLevels
+    excluded_45_rpm_levels: Excluded45RPMLevels
     required_78_rpm_completions: Required78RPMCompletions
     excluded_78_rpm_levels: Excluded78RPMLevels
     badgesanity: BadgeSanity
-    allowed_badges: AllowedBadges
+    excluded_badges: ExcludedBadges
     death_link: DeathLink
