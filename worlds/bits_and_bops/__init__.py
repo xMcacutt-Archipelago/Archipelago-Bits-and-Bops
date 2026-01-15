@@ -1,10 +1,11 @@
 import copy
 import typing
+from typing import *
 from BaseClasses import Item, MultiWorld, Tutorial, ItemClassification, Region, Location, LocationProgressType
 from Options import OptionError
 from worlds.AutoWorld import WebWorld, World
 from .items import BitsAndBopsItem, bits_and_bops_item_table, create_items, ItemData, get_random_item_names, \
-    junk_weights
+    junk_weights, bits_and_bops_item_name_groups
 from .locations import bits_and_bops_location_table, BitsAndBopsLocation, badge_dict, rpm_16_level_dict, \
     rpm_45_level_dict, rpm_78_level_dict
 from .options import BitsAndBopsOptions, bits_and_bops_option_groups
@@ -35,11 +36,13 @@ class BitsAndBopsWorld(World):
       Bits & Bops is sure to brighten your day.
     """
     game = "Bits & Bops"
+    bab_world_version = "v1.0.3"
     options_dataclass = BitsAndBopsOptions
     options: BitsAndBopsOptions
     topology_present = True
     item_name_to_id = {name: item.code for name, item in bits_and_bops_item_table.items()}
     location_name_to_id = {name: item.code for name, item in bits_and_bops_location_table.items()}
+    item_name_groups = bits_and_bops_item_name_groups
 
     web = BitsAndBopsWeb()
 
@@ -64,10 +67,27 @@ class BitsAndBopsWorld(World):
             "DeathLink": self.options.death_link.value,
         }
 
+    def handle_ut_yamless(self, slot_data: Optional[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
+        if not slot_data \
+                and hasattr(self.multiworld, "re_gen_passthrough") \
+                and isinstance(self.multiworld.re_gen_passthrough, dict) \
+                and self.game in self.multiworld.re_gen_passthrough:
+            slot_data = self.multiworld.re_gen_passthrough[self.game]
+        if not slot_data:
+            return None
+        self.options.required_rank.value = slot_data["Required Rank"]
+        self.options.required_level_completions.value = slot_data["Required Level Completions"]
+        self.options.required_16_rpm_completions.value = slot_data["Required 16RPM Completions"]
+        self.options.required_45_rpm_completions.value = slot_data["Required 45RPM Completions"]
+        self.options.required_78_rpm_completions.value = slot_data["Required 78RPM Completions"]
+        return slot_data
+
     def get_filler_item_name(self) -> str:
         return get_random_item_names(self.random, 1, junk_weights)[0]
 
     def generate_early(self) -> None:
+        self.handle_ut_yamless(None)
+
         valid_locations = 20
         required_locations = 20
 

@@ -78,6 +78,17 @@ def create_items(world: BitsAndBopsWorld):
     world.multiworld.itempool += world.itempool
 
 
+def get_item_groups():
+    unlocks = set()
+    records = set()
+    for level_name in level_names:
+        unlocks.add(f"{level_name} Unlock")
+        records.add(f"{level_name} Record")
+    carts = set()
+    for cart_name in cartridge_names:
+        carts.add(f"{cart_name} Cartridge")
+    return {"Level Unlock": unlocks, "Record": records, "Cartridge": carts}
+
 
 class ItemData:
     def __init__(self, code: Optional[int], classification: Optional[ItemClassification]):
@@ -135,6 +146,7 @@ bits_and_bops_item_table: Dict[str, ItemData] = {
     "Random Video Tape":             ItemData(0x101, ItemClassification.filler),
 }
 
+bits_and_bops_item_name_groups = get_item_groups()
 
 junk_weights = {
     "Random Souvenir":   10,
