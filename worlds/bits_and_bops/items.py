@@ -86,7 +86,7 @@ def get_item_groups():
         records.add(f"{level_name} Record")
     carts = set()
     for cart_name in cartridge_names:
-        carts.add(f"{cart_name} Cartridge")
+        carts.add(cart_name)
     return {"Level Unlock": unlocks, "Record": records, "Cartridge": carts}
 
 
