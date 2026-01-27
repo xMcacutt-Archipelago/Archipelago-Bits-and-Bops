@@ -1,4 +1,5 @@
 Bits & Bops:
+  excluded_16_rpm_levels: []
+  excluded_45_rpm_levels: []
   excluded_78_rpm_levels: []
-  required_78_rpm_completions: 1
-  excluded_badges: []
+  badgesanity: false

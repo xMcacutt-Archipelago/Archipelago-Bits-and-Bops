@@ -2,10 +2,10 @@ import copy
 import typing
 from typing import *
 from BaseClasses import Item, MultiWorld, Tutorial, ItemClassification, Region, Location, LocationProgressType
-from Options import OptionError
+from Options import OptionError, Accessibility
 from worlds.AutoWorld import WebWorld, World
 from .items import BitsAndBopsItem, bits_and_bops_item_table, create_items, ItemData, get_random_item_names, \
-    junk_weights, bits_and_bops_item_name_groups
+    junk_weights, bits_and_bops_item_name_groups, generate_item_table
 from .locations import bits_and_bops_location_table, BitsAndBopsLocation, badge_dict, rpm_16_level_dict, \
     rpm_45_level_dict, rpm_78_level_dict
 from .options import BitsAndBopsOptions, bits_and_bops_option_groups
@@ -32,11 +32,11 @@ class BitsAndBopsWeb(WebWorld):
 class BitsAndBopsWorld(World):
     """
     Bits & Bops is a collection of original rhythm mini-games!
-     Filled with catchy music, snappy gameplay and gorgeous, hand-drawn animation,
-      Bits & Bops is sure to brighten your day.
+    Filled with catchy music, snappy gameplay and gorgeous, hand-drawn animation,
+    Bits & Bops is sure to brighten your day.
     """
     game = "Bits & Bops"
-    bab_world_version = "v1.0.3"
+    bab_world_version = "v1.0.4"
     options_dataclass = BitsAndBopsOptions
     options: BitsAndBopsOptions
     topology_present = True
@@ -48,6 +48,7 @@ class BitsAndBopsWorld(World):
 
     def __init__(self, multiworld: MultiWorld, player: int):
         super().__init__(multiworld, player)
+        self.item_table = copy.deepcopy(bits_and_bops_item_table)
         self.itempool = []
         self.excluded_locs: set[str] = set()
 
@@ -56,7 +57,7 @@ class BitsAndBopsWorld(World):
         #state = self.multiworld.get_all_state(False)
         #state.update_reachable_regions(self.player)
         #visualize_regions(self.get_region("Menu"), f"{self.player_name}_world.puml",
-        #                  show_entrance_names=True, regions_to_highlight=state.reachable_regions[self.player])
+        #   show_entrance_names=True, regions_to_highlight=state.reachable_regions[self.player])
         return {
             "ModVersion": "1.0.4",
             "Required Rank": self.options.required_rank.value,
@@ -88,6 +89,9 @@ class BitsAndBopsWorld(World):
     def generate_early(self) -> None:
         self.handle_ut_yamless(None)
 
+        if self.options.accessibility == Accessibility.option_minimal:
+            raise OptionError(f"[Bits & Bops - {self.multiworld.player_name[self.player]}] Accessibility minimal is not supported for Bits & Bops please use full accesibility in your yaml.")
+
         valid_locations = 20
         required_locations = 20
 
@@ -99,33 +103,55 @@ class BitsAndBopsWorld(World):
 
         if self.options.required_16_rpm_completions.value > 0:
             valid_locations += 20
+            if self.options.required_16_rpm_completions > (20 - len(self.options.excluded_16_rpm_levels.value)):
+                raise OptionError(f"[Bits & Bops - {self.multiworld.player_name[self.player]}] Excluded more 16RPM levels than required to goal.")
             for level_16rpm in self.options.excluded_16_rpm_levels.value:
+                print(f"Excluded: {level_16rpm}")
                 self.excluded_locs.add(level_16rpm)
 
         if self.options.required_45_rpm_completions.value > 0:
             valid_locations += 20
+            if self.options.required_16_rpm_completions > (20 - len(self.options.excluded_45_rpm_levels.value)):
+                raise OptionError(f"[Bits & Bops - {self.multiworld.player_name[self.player]}] Excluded more 45RPM levels than required to goal.")
             for level_45rpm in self.options.excluded_45_rpm_levels.value:
+                print(f"Excluded: {level_45rpm}")
                 self.excluded_locs.add(level_45rpm)
 
         if self.options.required_78_rpm_completions.value > 0:
             valid_locations += 20
+            if self.options.required_78_rpm_completions > (20 - len(self.options.excluded_78_rpm_levels.value)):
+                raise OptionError(f"[Bits & Bops - {self.multiworld.player_name[self.player]}] Excluded more 78RPM levels than required to goal.")
             for level_78rpm in self.options.excluded_78_rpm_levels.value:
+                print(f"Excluded: {level_78rpm}")
                 self.excluded_locs.add(level_78rpm)
 
         if self.options.badgesanity.value:
-            valid_locations += 4
+            valid_locations += 16
             for badge in self.options.excluded_badges.value:
+                print(f"Excluded: {badge}")
                 self.excluded_locs.add(badge)
 
         valid_locations -= len(self.excluded_locs)
 
+        print(f"Valid: {valid_locations} Required: {required_locations}")
         if valid_locations < required_locations:
-            raise OptionError(f"[Bits & Bops - {self.multiworld.player_name[self.player]}] Too many locations excluded. Please adjust your yaml.")
+            raise OptionError(f"[Bits & Bops - {self.multiworld.player_name[self.player]}] Too many locations excluded. Valid: {valid_locations} Required: {required_locations}. Please adjust your yaml.")
 
         return
 
+    def generate_basic(self):
+        prog_items = []
+        non_excluded_locs = []
+        for item in self.itempool:
+            if item.classification is ItemClassification.progression:
+                prog_items.append(item.name)
+        for loc in self.multiworld.get_locations(self.player):
+            if loc.progress_type is not LocationProgressType.EXCLUDED:
+                non_excluded_locs.append(loc.name)
+        print(f"{len(prog_items)}, {len(non_excluded_locs)}")
+
     def create_item(self, name: str) -> Item:
-        item_info = bits_and_bops_item_table[name]
+        item_info = self.item_table[name]
         return BitsAndBopsItem(name, item_info.classification, item_info.code, self.player)
 
     def create_items(self):
@@ -142,11 +168,11 @@ class BitsAndBopsWorld(World):
         connect_all_regions(self)
         for level_name in level_names:
             self.create_event(level_name, f"{level_name} Complete", "Level Complete")
-            if self.options.required_16_rpm_completions.value > 0:
+            if self.options.required_16_rpm_completions.value > 0 and f"{level_name} - 16RPM" not in self.excluded_locs:
                 self.create_event(level_name, f"{level_name} 16 RPM Record Complete", "16 RPM Record Complete")
-            if self.options.required_45_rpm_completions.value > 0:
+            if self.options.required_45_rpm_completions.value > 0 and f"{level_name} - 45RPM" not in self.excluded_locs:
                 self.create_event(level_name, f"{level_name} 45 RPM Record Complete", "45 RPM Record Complete")
-            if self.options.required_78_rpm_completions.value > 0:
+            if self.options.required_78_rpm_completions.value > 0 and f"{level_name} - 78RPM" not in self.excluded_locs:
                 self.create_event(level_name, f"{level_name} 78 RPM Record Complete", "78 RPM Record Complete")
         self.create_event("Menu", "Final Mixtape", "Final Mixtape")
 
