@@ -106,7 +106,7 @@ class BitsAndBopsWorld(World):
             if self.options.required_16_rpm_completions > (20 - len(self.options.excluded_16_rpm_levels.value)):
                 raise OptionError(f"[Bits & Bops - {self.multiworld.player_name[self.player]}] Excluded more 16RPM levels than required to goal.")
             for level_16rpm in self.options.excluded_16_rpm_levels.value:
-                print(f"Excluded: {level_16rpm}")
+                #print(f"Excluded: {level_16rpm}")
                 self.excluded_locs.add(level_16rpm)
 
         if self.options.required_45_rpm_completions.value > 0:
@@ -114,7 +114,7 @@ class BitsAndBopsWorld(World):
             if self.options.required_16_rpm_completions > (20 - len(self.options.excluded_45_rpm_levels.value)):
                 raise OptionError(f"[Bits & Bops - {self.multiworld.player_name[self.player]}] Excluded more 45RPM levels than required to goal.")
             for level_45rpm in self.options.excluded_45_rpm_levels.value:
-                print(f"Excluded: {level_45rpm}")
+                #print(f"Excluded: {level_45rpm}")
                 self.excluded_locs.add(level_45rpm)
 
         if self.options.required_78_rpm_completions.value > 0:
@@ -122,33 +122,22 @@ class BitsAndBopsWorld(World):
             if self.options.required_78_rpm_completions > (20 - len(self.options.excluded_78_rpm_levels.value)):
                 raise OptionError(f"[Bits & Bops - {self.multiworld.player_name[self.player]}] Excluded more 78RPM levels than required to goal.")
             for level_78rpm in self.options.excluded_78_rpm_levels.value:
-                print(f"Excluded: {level_78rpm}")
+                #print(f"Excluded: {level_78rpm}")
                 self.excluded_locs.add(level_78rpm)
 
         if self.options.badgesanity.value:
             valid_locations += 16
             for badge in self.options.excluded_badges.value:
-                print(f"Excluded: {badge}")
+                #print(f"Excluded: {badge}")
                 self.excluded_locs.add(badge)
 
         valid_locations -= len(self.excluded_locs)
 
-        print(f"Valid: {valid_locations} Required: {required_locations}")
+        #print(f"Valid: {valid_locations} Required: {required_locations}")
         if valid_locations < required_locations:
             raise OptionError(f"[Bits & Bops - {self.multiworld.player_name[self.player]}] Too many locations excluded. Valid: {valid_locations} Required: {required_locations}. Please adjust your yaml.")
 
         return
-
-    def generate_basic(self):
-        prog_items = []
-        non_excluded_locs = []
-        for item in self.itempool:
-            if item.classification is ItemClassification.progression:
-                prog_items.append(item.name)
-        for loc in self.multiworld.get_locations(self.player):
-            if loc.progress_type is not LocationProgressType.EXCLUDED:
-                non_excluded_locs.append(loc.name)
-        print(f"{len(prog_items)}, {len(non_excluded_locs)}")
 
     def create_item(self, name: str) -> Item:
         item_info = self.item_table[name]
