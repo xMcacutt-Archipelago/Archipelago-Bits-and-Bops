@@ -36,7 +36,7 @@ class BitsAndBopsWorld(World):
     Bits & Bops is sure to brighten your day.
     """
     game = "Bits & Bops"
-    bab_world_version = "v1.0.5"
+    bab_world_version = "v1.0.6"
     options_dataclass = BitsAndBopsOptions
     options: BitsAndBopsOptions
     topology_present = True
@@ -168,15 +168,15 @@ class BitsAndBopsWorld(World):
     def set_rules(self):
         set_rules(self)
 
-    def extend_hint_information(self, hint_data: typing.Dict[int, typing.Dict[int, str]]):
-        new_hint_data = {}
-
-        for key, data in bits_and_bops_location_table.items():
-            try:
-                location: Location = self.multiworld.get_location(key, self.player)
-            except KeyError:
-                continue
-
-            # new_hint_data[location.address] = f""
-
-        hint_data[self.player] = new_hint_data
+    # def extend_hint_information(self, hint_data: typing.Dict[int, typing.Dict[int, str]]):
+    #     new_hint_data = {}
+    #
+    #     for key, data in bits_and_bops_location_table.items():
+    #         try:
+    #             location: Location = self.multiworld.get_location(key, self.player)
+    #         except KeyError:
+    #             continue
+    #
+    #         # new_hint_data[location.address] = f""
+    #
+    #     hint_data[self.player] = new_hint_data

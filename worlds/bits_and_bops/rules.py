@@ -63,7 +63,7 @@ def set_rules(world):
 
     world.get_location("Final Mixtape").access_rule = lambda state:\
         state.has("Level Complete", world.player, world.options.required_level_completions.value)\
-        and state.has("16 RPM Record Complete", world.player, world.options.required_16_rpm_completions.value) if world.options.required_16_rpm_completions > 0 else True\
-        and state.has("45 RPM Record Complete", world.player, world.options.required_45_rpm_completions.value) if world.options.required_45_rpm_completions > 0 else True\
-        and state.has("78 RPM Record Complete", world.player, world.options.required_78_rpm_completions.value) if world.options.required_78_rpm_completions > 0 else True
+        and (state.has("16 RPM Record Complete", world.player, world.options.required_16_rpm_completions.value) if world.options.required_16_rpm_completions > 0 else True)\
+        and (state.has("45 RPM Record Complete", world.player, world.options.required_45_rpm_completions.value) if world.options.required_45_rpm_completions > 0 else True)\
+        and (state.has("78 RPM Record Complete", world.player, world.options.required_78_rpm_completions.value) if world.options.required_78_rpm_completions > 0 else True)
     world.multiworld.completion_condition[world.player] = lambda state: state.can_reach_location("Final Mixtape", world.player)
