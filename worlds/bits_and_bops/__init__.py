@@ -36,7 +36,7 @@ class BitsAndBopsWorld(World):
     Bits & Bops is sure to brighten your day.
     """
     game = "Bits & Bops"
-    bab_world_version = "v1.0.4"
+    bab_world_version = "v1.0.5"
     options_dataclass = BitsAndBopsOptions
     options: BitsAndBopsOptions
     topology_present = True
@@ -111,7 +111,7 @@ class BitsAndBopsWorld(World):
 
         if self.options.required_45_rpm_completions.value > 0:
             valid_locations += 20
-            if self.options.required_16_rpm_completions > (20 - len(self.options.excluded_45_rpm_levels.value)):
+            if self.options.required_45_rpm_completions > (20 - len(self.options.excluded_45_rpm_levels.value)):
                 raise OptionError(f"[Bits & Bops - {self.multiworld.player_name[self.player]}] Excluded more 45RPM levels than required to goal.")
             for level_45rpm in self.options.excluded_45_rpm_levels.value:
                 #print(f"Excluded: {level_45rpm}")
